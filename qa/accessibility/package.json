@@ -1,0 +1,12 @@
+{
+  "name": "forge-a11y-scan",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "scan": "node axe-scan.mjs"
+  },
+  "dependencies": {
+    "@axe-core/playwright": "^4.10.1",
+    "@playwright/test": "^1.53.0"
+  }
+}

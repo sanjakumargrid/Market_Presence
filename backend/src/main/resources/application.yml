@@ -1,0 +1,85 @@
+spring:
+  application:
+    name: market-presence-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/forge_market_presence
+    username: sanjay
+    password: 1234
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    baseline-version: 0
+    locations: classpath:db/migration
+
+  mail:
+    # SMTP server coordinates — defaults match Mailhog (docker run -p 1025:1025 -p 8025:8025 mailhog/mailhog)
+    # Override with your provider (SendGrid: host=smtp.sendgrid.net port=587, etc.)
+    host: localhost
+    port: 1025
+    username: ""
+    password: ""
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+            required: false
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+server:
+  port: 8086
+
+app:
+  jwt:
+    secret: "404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970"
+    expiration-ms: 86400000
+  upload:
+    dir: uploads/resumes
+
+  team2:
+    # Points to the local demo stub so handoffs succeed out of the box (REQ-JP-08).
+    # Replace with Team 2's real URL (e.g. http://team2-host:8080/api) when available.
+    # Set to "" to revert to PENDING-only mode (no HTTP call attempted).
+    api-base-url: "http://localhost:8086/api/stub/team2"
+    timeout-seconds: 10
+
+  email:
+    smtp:
+      # Set to true to activate SmtpEmailService (real delivery).
+      # false → LoggingEmailService is used (emails printed to application log only).
+      #
+      # Local demo with Mailhog:
+      #   docker run -d -p 1025:1025 -p 8025:8025 mailhog/mailhog
+      #   Set enabled: true — view received emails at http://localhost:8025
+      #
+      # Production (e.g. SendGrid):
+      #   Set enabled: true
+      #   Set spring.mail.host=smtp.sendgrid.net, port=587
+      #   Set spring.mail.username=apikey, spring.mail.password=<SENDGRID_API_KEY>
+      #   Set spring.mail.properties.mail.smtp.auth=true
+      #   Set spring.mail.properties.mail.smtp.starttls.enable=true
+      enabled: false
+      from: noreply@forge-ai.com
+
+  channels:
+    linkedin:
+      # Set to true when LinkedIn Jobs API credentials are configured and a real publish is needed.
+      # false → channel status = PENDING with a copyable job URL for manual LinkedIn posting.
+      api-configured: false
+    careers-portal:
+      # Public-facing base URL of the React careers portal.
+      # Used to build the canonical job URL sent to LinkedIn and stored on channel records.
+      base-url: "http://localhost:5173"
